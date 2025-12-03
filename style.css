@@ -1,0 +1,236 @@
+@font-face {
+    font-family: "Minecraftia Regular";
+    src: url("fonts/Minecraftia-Regular.eot");
+    src: url("fonts/Minecraftia-Regular.eot?#iefix")format("embedded-opentype"),
+         url("fonts/Minecraftia-Regular.woff2")format("woff2"),
+         url("fonts/Minecraftia-Regular.woff")format("woff"),
+         url("fonts/Minecraftia-Regular.ttf")format("truetype"),
+         url("fonts/Minecraftia-Regular.svg#Minecraftia Regular")format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* General Body and Container Styles */
+body {
+    font-family: "Minecraftia Regular", cursive; /* Example retro font */
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #0f0f1a;
+    border: 2px solid #00f;
+    box-shadow: 0 0 15px rgba(0, 0, 255, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+}
+
+h1, h2 {
+    color: #0f0;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
+    margin-bottom: 20px;
+}
+
+/* Doors Container */
+.doors-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+/* Door Styling - Mimicking the reference app's button style (PixelCard/GlitchText buttons) */
+.door {
+    background-color: #000; /* Black background for the button-like door */
+    border: 3px solid #00f; /* Blue border */
+    border-radius: 8px; /* Slightly rounded corners */
+    width: 150px; /* Fixed width */
+    height: 200px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out label and image */
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 255, 0.4); /* Initial shadow for depth */
+    position: relative; /* For image positioning */
+    overflow: hidden; /* Hide overflowing parts of the image */
+}
+
+.door:hover:not(.selected):not(.open) {
+    background-color: #4a4a7a; /* Slightly lighter on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 255, 0.6); /* Enhanced shadow */
+    transform: translateY(-3px); /* Slight lift effect */
+}
+
+.door.selected {
+    background-color: #0f0; /* Green when selected */
+    border-color: #0f0; /* Green border */
+    box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.8), 0 0 15px rgba(0, 255, 0, 0.5); /* Inset shadow for "pressed" look, outer glow */
+    transform: scale(0.98); /* Slightly shrink to emphasize selection */
+    cursor: default;
+}
+
+.door.open {
+    background-color: #000; /* Black background when open */
+    border-color: #f00; /* Red border for open door */
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Red glow for open door */
+    cursor: default;
+}
+
+.door-label {
+    font-size: 2em;
+    font-weight: bold;
+    color: #e0e0e0;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    z-index: 1; /* Ensure label is above image */
+}
+
+.prize-image {
+    max-width: 100%;
+    max-height: 80%; /* Adjust as needed */
+    object-fit: contain; /* Ensure image fits without distortion */
+    position: absolute;
+    bottom: 10px; /* Position at the bottom of the door */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0; /* Image behind the label initially */
+}
+
+.prize-image.hidden {
+    display: none;
+}
+
+.door.open .prize-image:not(.hidden) {
+    display: block;
+}
+
+
+/* Controls Section */
+.controls {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+button {
+    background-color: #6a0572; /* Purple-ish, similar to "Shuffle" in example */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Minecraftia Regular", cursive;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(106, 5, 114, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover:not(:disabled) {
+    background-color: #8a0792;
+    box-shadow: 0 6px 15px rgba(106, 5, 114, 0.7);
+    transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(106, 5, 114, 0.5);
+}
+
+button:disabled {
+    background-color: #4a4a4a;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Status Message */
+.status-message {
+    margin-top: 25px;
+    font-size: 1.1em;
+    color: #f0f; /* Magenta for status */
+    text-shadow: 0 0 3px rgba(255, 0, 255, 0.7);
+}
+
+/* Statistics Section */
+.statistics {
+    background-color: #1a1a3e;
+    border: 1px solid #00f;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 40px;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0, 0, 255, 0.3);
+}
+
+.statistics h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.statistics h3 {
+    color: #0ff; /* Cyan for sub-headings */
+    text-shadow: 0 0 3px rgba(0, 255, 255, 0.5);
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.statistics p {
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 5px;
+}
+
+.statistics span {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .doors-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .door {
+        width: 80%;
+        max-width: 250px;
+        height: 180px;
+    }
+
+    .controls button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    button {
+        font-size: 0.7em;
+        padding: 10px 15px;
+    }
+}

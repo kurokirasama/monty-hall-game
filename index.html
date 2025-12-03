@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Monty Hall</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Juego Monty Hall</h1>
+        <div class="doors-container">
+            <div id="door-a" class="door">
+                <img src="images/goat.png" alt="Goat" class="prize-image hidden">
+                <span class="door-label">A</span>
+            </div>
+            <div id="door-b" class="door">
+                <img src="images/goat.png" alt="Goat" class="prize-image hidden">
+                <span class="door-label">B</span>
+            </div>
+            <div id="door-c" class="door">
+                <img src="images/goat.png" alt="Goat" class="prize-image hidden">
+                <span class="door-label">C</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="new-game-btn">Nuevo Juego</button>
+            <button id="reveal-losing-btn" disabled>Revelar Puerta Perdedora</button>
+            <button id="reveal-outcome-btn" disabled>Revelar Resultado Final</button>
+        </div>
+
+        <div id="status-message" class="status-message">Selecciona una puerta.</div>
+
+        <div class="statistics">
+            <h2>Estadísticas</h2>
+            <p>Partidas Totales: <span id="total-plays">0</span></p>
+            <p>Porcentaje de Victorias General: <span id="overall-win-percent">0%</span></p>
+            <h3>Cambiado</h3>
+            <p>Victorias: <span id="switched-wins">0</span> / Derrotas: <span id="switched-losses">0</span></p>
+            <p>Porcentaje de Victorias: <span id="switched-win-percent">0%</span></p>
+            <h3>Mantenido</h3>
+            <p>Victorias: <span id="stayed-wins">0</span> / Derrotas: <span id="stayed-losses">0</span></p>
+            <p>Porcentaje de Victorias: <span id="stayed-win-percent">0%</span></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <audio id="win-sound" src="sounds/win.mp3" preload="auto"></audio>
+    <audio id="lose-sound" src="sounds/lose.mp3" preload="auto"></audio>
+</body>
+</html>
