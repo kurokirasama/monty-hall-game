@@ -12,6 +12,7 @@ The Monty Hall Simulator is an educational web application designed to help stud
 
 ## Key Features & Priorities
 - **Interactive Gameplay:** Simulate the TV show experience (pick, switch/stay, reveal).
+- **Design System:** Maintain a strict 8-bit retro aesthetic as defined in the project [DESIGN.md](../DESIGN.md).
 - **Statistics Tracking:** Enhance real-time tracking of wins, losses, and percentages with more detailed metrics and charts in the future.
 - **Visual Polish:** Maintain and enhance the retro pixel-art aesthetic and animations.
 - **Audio Experience:** Continue to build on audio feedback for wins, losses, and interactions.
