@@ -1,8 +1,3 @@
 # Project Tracks
 
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
-
----
-
-- [x] **Track: Enhance detailed statistics tracking and visualizations**
-  *Link: [./tracks/enhance_stats_20260425/](./tracks/enhance_stats_20260425/)*
