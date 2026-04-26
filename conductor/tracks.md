@@ -9,10 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Design System Authoring**
-*Link: [./tracks/design_system_20260426/](./tracks/design_system_20260426/)*
-
----
-
 - [ ] **Track: Enforce DESIGN.md Compliance**
 *Link: [./tracks/enforce_design_20260426/](./tracks/enforce_design_20260426/)*
