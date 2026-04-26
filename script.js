@@ -36,7 +36,8 @@ let stats = {
     switchedWins: 0,
     switchedLosses: 0,
     stayedWins: 0,
-    stayedLosses: 0
+    stayedLosses: 0,
+    history: [] // Stores objects: { result: 'win'|'loss', strategy: 'switched'|'stayed' }
 };
 
 function initializeGame() {
@@ -46,7 +47,8 @@ function initializeGame() {
         switchedWins: 0,
         switchedLosses: 0,
         stayedWins: 0,
-        stayedLosses: 0
+        stayedLosses: 0,
+        history: []
     };
     updateStatisticsDisplay(); // Update display with zeroed stats
     resetGameRound(); // Call a new function to reset game round state
@@ -225,27 +227,37 @@ function revealOutcome() {
         // Update stats
         // console.log('Updating stats...');
         stats.totalPlays++;
+        let outcome = {
+            strategy: game.hasPlayerSwitched ? 'switched' : 'stayed',
+            result: null
+        };
+
         if (game.hasPlayerSwitched) {
             if (finalChoice === game.carDoor) {
                 stats.switchedWins++;
+                outcome.result = 'win';
                 statusMessage.textContent = '¡Cambiaste y GANASTE! ¡Felicidades!';
                 winSound.play(); // Play win sound
             } else {
                 stats.switchedLosses++;
+                outcome.result = 'loss';
                 statusMessage.textContent = 'Cambiaste y PERDISTE. ¡Mejor suerte la próxima vez!';
                 loseSound.play(); // Play lose sound
             }
         } else { // Player stayed
             if (finalChoice === game.carDoor) {
                 stats.stayedWins++;
+                outcome.result = 'win';
                 statusMessage.textContent = '¡Mantuviste tu elección y GANASTE! ¡Felicidades!';
                 winSound.play(); // Play win sound
             } else {
                 stats.stayedLosses++;
+                outcome.result = 'loss';
                 statusMessage.textContent = 'Mantuviste tu elección y PERDISTE. ¡Mejor suerte la próxima vez!';
                 loseSound.play(); // Play lose sound
             }
         }
+        stats.history.push(outcome);
         // saveStats(); // Removed call to saveStats()
         updateStatisticsDisplay();
         newGameBtn.textContent = 'Jugar de Nuevo'; // Change button text for convenience
