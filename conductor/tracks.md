@@ -9,11 +9,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [x] **Track: Update Conductor Environment**
-*Link: [./tracks/update_conductor_20260426/](./tracks/update_conductor_20260426/)*
-
----
-
 - [ ] **Track: Design System Authoring**
 *Link: [./tracks/design_system_20260426/](./tracks/design_system_20260426/)*
 
