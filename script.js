@@ -11,11 +11,14 @@ const statusMessage = document.getElementById('status-message');
 const totalPlaysSpan = document.getElementById('total-plays');
 const switchedWinsSpan = document.getElementById('switched-wins');
 const switchedLossesSpan = document.getElementById('switched-losses');
-const switchedWinPercentSpan = document.getElementById('switched-win-percent');
 const stayedWinsSpan = document.getElementById('stayed-wins');
 const stayedLossesSpan = document.getElementById('stayed-losses');
-const stayedWinPercentSpan = document.getElementById('stayed-win-percent');
-const overallWinPercentSpan = document.getElementById('overall-win-percent'); // New
+const overallWinPercentSpan = document.getElementById('overall-win-percent');
+const switchedBar = document.getElementById('switched-bar');
+const stayedBar = document.getElementById('stayed-bar');
+const switchedBarPercent = document.getElementById('switched-bar-percent');
+const stayedBarPercent = document.getElementById('stayed-bar-percent');
+const historyList = document.getElementById('history-list');
 
 let winSound;
 let loseSound;
@@ -36,7 +39,8 @@ let stats = {
     switchedWins: 0,
     switchedLosses: 0,
     stayedWins: 0,
-    stayedLosses: 0
+    stayedLosses: 0,
+    history: [] // Stores objects: { result: 'win'|'loss', strategy: 'switched'|'stayed' }
 };
 
 function initializeGame() {
@@ -46,7 +50,8 @@ function initializeGame() {
         switchedWins: 0,
         switchedLosses: 0,
         stayedWins: 0,
-        stayedLosses: 0
+        stayedLosses: 0,
+        history: []
     };
     updateStatisticsDisplay(); // Update display with zeroed stats
     resetGameRound(); // Call a new function to reset game round state
@@ -89,17 +94,33 @@ function updateStatisticsDisplay() {
     switchedWinsSpan.textContent = stats.switchedWins;
     switchedLossesSpan.textContent = stats.switchedLosses;
     const totalSwitched = stats.switchedWins + stats.switchedLosses;
-    switchedWinPercentSpan.textContent = totalSwitched > 0 ? ((stats.switchedWins / totalSwitched) * 100).toFixed(2) + '%' : '0%';
+    const switchedWinPercent = totalSwitched > 0 ? (stats.switchedWins / totalSwitched) * 100 : 0;
+    switchedBar.style.width = switchedWinPercent + '%';
+    switchedBarPercent.textContent = switchedWinPercent.toFixed(1) + '%';
 
     stayedWinsSpan.textContent = stats.stayedWins;
     stayedLossesSpan.textContent = stats.stayedLosses;
     const totalStayed = stats.stayedWins + stats.stayedLosses;
-    stayedWinPercentSpan.textContent = totalStayed > 0 ? ((stats.stayedWins / totalStayed) * 100).toFixed(2) + '%' : '0%';
+    const stayedWinPercent = totalStayed > 0 ? (stats.stayedWins / totalStayed) * 100 : 0;
+    stayedBar.style.width = stayedWinPercent + '%';
+    stayedBarPercent.textContent = stayedWinPercent.toFixed(1) + '%';
 
     // Calculate and update Overall Win %
     const totalWins = stats.switchedWins + stats.stayedWins;
     const overallWinPercent = stats.totalPlays > 0 ? ((totalWins / stats.totalPlays) * 100).toFixed(2) + '%' : '0%';
     overallWinPercentSpan.textContent = overallWinPercent;
+
+    // Update History List
+    historyList.innerHTML = '';
+    stats.history.slice().reverse().forEach((game, index) => {
+        const item = document.createElement('div');
+        item.className = `history-item ${game.result}`;
+        const gameNum = stats.history.length - index;
+        const strategyLabel = game.strategy === 'switched' ? 'Cambió' : 'Mantuvo';
+        const resultLabel = game.result === 'win' ? 'GANÓ' : 'PERDIÓ';
+        item.innerHTML = `<span>Partida #${gameNum}: ${strategyLabel}</span> <span>${resultLabel}</span>`;
+        historyList.appendChild(item);
+    });
 }
 
 
@@ -225,27 +246,37 @@ function revealOutcome() {
         // Update stats
         // console.log('Updating stats...');
         stats.totalPlays++;
+        let outcome = {
+            strategy: game.hasPlayerSwitched ? 'switched' : 'stayed',
+            result: null
+        };
+
         if (game.hasPlayerSwitched) {
             if (finalChoice === game.carDoor) {
                 stats.switchedWins++;
+                outcome.result = 'win';
                 statusMessage.textContent = '¡Cambiaste y GANASTE! ¡Felicidades!';
                 winSound.play(); // Play win sound
             } else {
                 stats.switchedLosses++;
+                outcome.result = 'loss';
                 statusMessage.textContent = 'Cambiaste y PERDISTE. ¡Mejor suerte la próxima vez!';
                 loseSound.play(); // Play lose sound
             }
         } else { // Player stayed
             if (finalChoice === game.carDoor) {
                 stats.stayedWins++;
+                outcome.result = 'win';
                 statusMessage.textContent = '¡Mantuviste tu elección y GANASTE! ¡Felicidades!';
                 winSound.play(); // Play win sound
             } else {
                 stats.stayedLosses++;
+                outcome.result = 'loss';
                 statusMessage.textContent = 'Mantuviste tu elección y PERDISTE. ¡Mejor suerte la próxima vez!';
                 loseSound.play(); // Play lose sound
             }
         }
+        stats.history.push(outcome);
         // saveStats(); // Removed call to saveStats()
         updateStatisticsDisplay();
         newGameBtn.textContent = 'Jugar de Nuevo'; // Change button text for convenience

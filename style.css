@@ -201,6 +201,90 @@ button:disabled {
     color: #fff;
 }
 
+/* Chart Styles */
+.stats-visual {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chart-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-label {
+    width: 100px;
+    font-size: 0.8em;
+    color: #0ff;
+}
+
+.chart-bar-bg {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #000;
+    border: 1px solid #00f;
+    position: relative;
+}
+
+.chart-bar {
+    height: 100%;
+    background-color: #0f0;
+    width: 0%; /* Dynamic */
+    transition: width 0.5s ease-out;
+}
+
+.chart-percent {
+    width: 60px;
+    font-size: 0.8em;
+    text-align: right;
+}
+
+/* History List Styles */
+.history-container {
+    margin-top: 30px;
+    border-top: 1px dashed #00f;
+    padding-top: 20px;
+}
+
+.history-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbar for Retro Feel */
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #00f;
+}
+
+.history-item {
+    font-size: 0.75em;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #0f0f3a;
+}
+
+.history-item.win {
+    color: #0f0;
+}
+
+.history-item.loss {
+    color: #f00;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .doors-container {
