@@ -147,6 +147,7 @@ All tasks follow a strict lifecycle:
 
 Before marking any task complete, verify:
 
+- [ ] Adherence to [DESIGN.md](../DESIGN.md) for UI/UX changes
 - [ ] All tests pass
 - [ ] Code coverage meets requirements (>80%)
 - [ ] Code follows project's code style guidelines (as defined in `code_styleguides/`)
