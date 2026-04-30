@@ -15,7 +15,7 @@
 - [x] Task: Switch to `main` branch (fd60a3d)
     - [ ] Ensure working directory is clean
     - [ ] Checkout `main`
-- [ ] Task: Remove private files from `main`
+- [~] Task: Remove private files from `main`
     - [ ] Remove `DESIGN.md`, `GEMINI.md`, `tests/`, and `plan.md` using `git rm`
 - [ ] Task: Commit changes to `main`
     - [ ] Commit with message `chore: Remove private conductor artifacts from public branch`
