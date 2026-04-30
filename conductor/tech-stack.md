@@ -8,3 +8,4 @@
 ## Backend & Infrastructure
 - **Server:** Node.js (for simple static file serving)
 - **Deployment:** Cloudflare Tunnel (optional)
+- **Service Management:** systemd (for persistent background execution)

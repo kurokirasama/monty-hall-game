@@ -11,6 +11,7 @@ The Monty Hall Simulator is an educational web application designed to help stud
 - **Provide clear visualizations** of win/loss statistics to highlight the mathematical advantage of switching doors.
 
 ## Key Features & Priorities
+- **Live Demo:** Publicly accessible application at [https://monty-hall.kks.qzz.io](https://monty-hall.kks.qzz.io).
 - **Interactive Gameplay:** Simulate the TV show experience (pick, switch/stay, reveal).
 - **Design System:** Maintain a strict 8-bit retro aesthetic as defined in the project [DESIGN.md](../DESIGN.md).
 - **Statistics Tracking:** Real-time tracking of wins, losses, and percentages with detailed historical breakdowns and visual bar charts.
