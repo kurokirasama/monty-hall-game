@@ -4,7 +4,7 @@
 - [x] Task: Update README.md with Live Demo section (948418a)
     - [ ] Add "Live Demo" section to `README.md`
     - [ ] Insert link `https://monty-hall.kks.qzz.io`
-- [ ] Task: Create DEPLOYMENT.md
+- [x] Task: Create DEPLOYMENT.md (42fc441)
     - [ ] Outline step-by-step setup instructions
     - [ ] Include details for running the Node.js server and systemd setup
 - [ ] Task: Create systemd service file
