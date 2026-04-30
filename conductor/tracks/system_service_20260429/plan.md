@@ -12,7 +12,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Environment Setup & Documentation' (Protocol in workflow.md)
 
 ## Phase 2: Public Branch Cleanup
-- [ ] Task: Switch to `main` branch
+- [x] Task: Switch to `main` branch (fd60a3d)
     - [ ] Ensure working directory is clean
     - [ ] Checkout `main`
 - [ ] Task: Remove private files from `main`
