@@ -1,0 +1,13 @@
+[Unit]
+Description=Monty Hall Simulator Application
+After=network.target
+
+[Service]
+Type=simple
+User=kira
+WorkingDirectory=/home/kira/Yandex.Disk/webapps/monty-hall-app-v2
+ExecStart=/usr/bin/node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
