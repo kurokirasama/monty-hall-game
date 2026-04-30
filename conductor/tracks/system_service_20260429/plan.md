@@ -11,7 +11,7 @@
     - [ ] Create `monty-hall.service` configured for `server.js` on port 8002
 - [ ] Task: Conductor - User Manual Verification 'Environment Setup & Documentation' (Protocol in workflow.md)
 
-## Phase 2: Public Branch Cleanup
+## Phase 2: Public Branch Cleanup [checkpoint: 30fddfe]
 - [x] Task: Switch to `main` branch (fd60a3d)
     - [ ] Ensure working directory is clean
     - [ ] Checkout `main`
