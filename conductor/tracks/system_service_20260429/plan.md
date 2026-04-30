@@ -1,6 +1,6 @@
 # Implementation Plan: System Service & Public Branch Cleanup
 
-## Phase 1: Environment Setup & Documentation
+## Phase 1: Environment Setup & Documentation [checkpoint: 0baad49]
 - [x] Task: Update README.md with Live Demo section (948418a)
     - [ ] Add "Live Demo" section to `README.md`
     - [ ] Insert link `https://monty-hall.kks.qzz.io`
