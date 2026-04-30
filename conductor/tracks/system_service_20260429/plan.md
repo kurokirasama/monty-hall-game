@@ -15,10 +15,10 @@
 - [x] Task: Switch to `main` branch (fd60a3d)
     - [ ] Ensure working directory is clean
     - [ ] Checkout `main`
-- [~] Task: Remove private files from `main`
+- [x] Task: Remove private files from `main` (ac33ef2)
     - [ ] Remove `DESIGN.md`, `GEMINI.md`, `tests/`, and `plan.md` using `git rm`
-- [ ] Task: Commit changes to `main`
+- [x] Task: Commit changes to `main` (ac33ef2)
     - [ ] Commit with message `chore: Remove private conductor artifacts from public branch`
-- [ ] Task: Switch back to `conductor-private`
+- [x] Task: Switch back to `conductor-private` (b8c09b8)
     - [ ] Checkout `conductor-private` branch
 - [ ] Task: Conductor - User Manual Verification 'Public Branch Cleanup' (Protocol in workflow.md)
