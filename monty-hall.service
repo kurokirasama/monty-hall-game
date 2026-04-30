@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=kira
-WorkingDirectory=/home/kira/Yandex.Disk/webapps/monty-hall-app-v2
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Yandex.Disk/webapps/monty-hall-app-v2
 ExecStart=/usr/bin/node server.js
 Restart=always
 
