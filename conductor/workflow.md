@@ -1,13 +1,71 @@
 # Project Workflow
 
+### Mandatory Protocols
+
+#### Nushell-First Guidelines
+Priority must be given to using Nushell pipelines and the `evaluate` tool for all system interactions and data manipulation tasks. **ALWAYS** activate the `nushell-expert` skill before executing the first nushell command you intend to use in the corresponding session.
+
+#### Status Reporting & Notifications
+
+##### Standard Task Summary
+After every successful task completion, provide a very brief summary in English of what was done and how.
+- **Tone:** Conceptual description, including technical details only where appropriate for clarity.
+- **Exception:** Do NOT provide a summary for trivial tasks unless explicitly requested.
+
+##### Mandatory Discord Notification for User Input (CRITICAL)
+Whenever you are about to use the `ask_user` (or equivalent) tool to request feedback, clarification, or approval, you **MUST** first send a Discord notification. This ensures the user is alerted that the agent is blocked and waiting for input.
+
+**CRITICAL:** ALWAYS execute `to-discord` nushell command and WAIT for it to finish BEFORE executing the `ask_user` tool. This sequential ordering is mandatory to ensure the user is notified that the agent is blocked and waiting.
+
+- **Notification Content**:
+    - **Exact Question**: Include the literal question(s) being that will be asked via `ask_user` (or equivalent).
+    - **Task Metadata**: State the current Track ID, Phase Name, and Task Description.
+    - **Context for Review/Opinion**: If asking for a review or opinion on changes:
+        - List the modified files.
+        - Provide a high-level conceptual summary of the changes.
+        - Include a simplified `git diff` (markdown code block ````diff````) focusing on relevant logic.
+        - **Visibility Mandate**: The exact same information sent to Discord (question, metadata, context) MUST also be explicitly included in the `ask_user` call (or equivalent) so it is visible to the user in the chat interface.
+        - **Diff Management**: If the diff or total message exceeds 2000 characters, split it into several messages.
+
+- **Command**: Execute the nushell `evaluate` tool with `to-discord $message -p`.
+- **Notification Content**:
+    - **Exact Question**: Include the literal question(s) being that will be asked via `ask_user` (or equivalent).
+    - **Task Metadata**: State the current Track ID, Phase Name, and Task Description.
+    - **Context for Review/Opinion**: If asking for a review or opinion on changes:
+        - List the modified files.
+        - Provide a high-level conceptual summary of the changes.
+        - Include a simplified `git diff` (markdown code block ````diff````) focusing on relevant logic.
+        - **Visibility Mandate**: The exact same information sent to Discord (question, metadata, context) MUST also be explicitly included in the `ask_user` call (or equivalent) so it is visible to the user in the chat interface.
+        - **Diff Management**: If the diff or total message exceeds 2000 characters, split it into several messages.
+
+- **Command**: Execute the nushell `evaluate` tool with `to-discord $message -p`.
+
+- **Command**: Execute the `mcp_standard-nushell_evaluate` tool with `to-discord $message -p`.
+- **Nushell Command**: `to-discord` is a Nushell command.
+- **Nushell Activation**: **ALWAYS** activate the `nushell-expert` skill before executing the first nushell command.
+- **Fallback Mechanism**: If the `evaluate` tool is unavailable or fails, use the following syntax to ensure local config/env are loaded:
+  `nu --config /home/kira/.config/nushell/config.nu --env-config /home/kira/.config/nushell/env.nu -c 'to-discord "<message>" -p'`
+- **Timing**: Send the notification **immediately before** calling `ask_user`.
+- **`ask_user` Fallback**: If the `ask_user` tool is unavailable or not accessible in the current environment, ask the user directly by outputting your question as plain text in the chat interface.
+
+##### Discord Notification for Long Tasks (5min+)
+If a task takes 5 minutes or more, you **MUST** perform these steps before proceeding or asking for input:
+1.  **Draft Report (English)**: Create a concise conceptual and technical summary, immediate next steps, and status (waiting for user or continuing automatically).
+2.  **Send via Discord**: Execute the `mcp_standard-nushell_evaluate` tool with `to-discord $message -p`.
+3.  **Sequence Priority**: If the next step involves `ask_user`, follow the "Mandatory Discord Notification for User Input" protocol above.
+
+#### Track Management
+- **Cleanup & Synchronization**: Once a track is archived or deleted, the agent **MUST** activate the `git-sync` skill to ensure the local repository is fully synchronized (pull/push loop) with the remote origin. This is a non-optional MUST to ensure the remote origin is synchronized immediately after cleanup operations.
+- **Session Retrospective**: The `session-retro` skill MUST be executed when done if an issue was encountered that is new (compared against obsidian memory), required significant effort, or was interesting/unique.
+
 ## Guiding Principles
 
-1. **Nushell-First:** Priority must be given to using Nushell pipelines and the `evaluate` tool for all system interactions. Standard shell commands should only be used as a fallback.
-2. **Context-Driven Development:** Follow the mandatory Context Workflow: `Discovery -> Synthesis -> Planning -> Execution` using `context-expert` for all tracks.
-3. **The Plan is the Source of Truth:** All work must be tracked in `plan.md`
-4. **The Tech Stack is Deliberate:** Changes to the tech stack must be documented in `tech-stack.md` *before* implementation
-5. **Test-Driven Development:** Write unit tests before implementing functionality
-6. **High Code Coverage:** Aim for >80% code coverage for all modules
+1. **The Plan is the Source of Truth:** All work must be tracked in `plan.md`
+2. **The Tech Stack is Deliberate:** Changes to the tech stack must be documented in `tech-stack.md` *before* implementation
+3. **Test-Driven Development (TDD):** Write unit tests before implementing functionality
+4. **BDD / Gherkin Acceptance Scenarios:** Define functional specifications using `Given-When-Then` scenarios in `spec.md`
+5. **High Code Coverage:** Aim for >80% code coverage for all modules
+6. **Mutation Testing:** Use mutation testing (e.g., mutmut, Stryker, cargo-mutants) to verify test assertion quality, targeting a `>70%` Mutation Score on new/modified code.
 7. **User Experience First:** Every decision should prioritize user experience
 8. **Non-Interactive & CI-Aware:** Prefer non-interactive commands. Use `CI=true` for watch-mode tools (tests, linters) to ensure single execution.
 
@@ -21,9 +79,11 @@ All tasks follow a strict lifecycle:
 
 2. **Mark In Progress:** Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`
 
-3. **Write Failing Tests (Red Phase):**
+3. **Consult howto.md:** Read the relevant section of the track's `howto.md` for per-task implementation guidance (code snippets, patterns, pitfalls, verification commands). The agent MAY update `howto.md` during implementation if better approaches are discovered.
+
+9. **Write Failing Tests (Red Phase):**
    - Create a new test file for the feature or bug fix.
-   - Write one or more unit tests that clearly define the expected behavior and acceptance criteria for the task.
+   - Write unit tests that implement the executable BDD/Gherkin scenarios specified in `spec.md`.
    - **CRITICAL:** Run the tests and confirm that they fail as expected. This is the "Red" phase of TDD. Do not proceed until you have failing tests.
 
 4. **Implement to Pass Tests (Green Phase):**
@@ -34,11 +94,9 @@ All tasks follow a strict lifecycle:
    - With the safety of passing tests, refactor the implementation code and the test code to improve clarity, remove duplication, and enhance performance without changing the external behavior.
    - Rerun tests to ensure they still pass after refactoring.
 
-6. **Verify Coverage:** Run coverage reports using the project's chosen tools. For example, in a Python project, this might look like:
-   ```bash
-   pytest --cov=app --cov-report=html
-   ```
-   Target: >80% coverage for new code. The specific tools and commands will vary by language and framework.
+6. **Verify Coverage and Run Mutation Tests:**
+   - Run coverage reports using the project's chosen tools. Target: >80% coverage for new code.
+   - Run the project's mutation testing suite (e.g. `mutmut`, `stryker`, or `cargo-mutants`) on the modified modules. Target a Mutation Score of `>70%`. If any mutants survive, add tests with stronger assertions to kill them.
 
 7. **Document Deviations:** If implementation differs from tech stack:
    - **STOP** implementation
@@ -51,20 +109,20 @@ All tasks follow a strict lifecycle:
    - Propose a clear, concise commit message e.g, `feat(ui): Create basic HTML structure for calculator`.
    - Perform the commit.
 
-9. **Attach Task Summary with Git Notes:**
-   - **Step 9.1: Get Commit Hash:** Obtain the hash of the *just-completed commit* (`git log -1 --format="%H"`).
-   - **Step 9.2: Draft Note Content:** Create a detailed summary for the completed task. This should include the task name, a summary of changes, a list of all created/modified files, and the core "why" for the change.
-   - **Step 9.3: Attach Note:** Use the `git notes` command to attach the summary to the commit.
+11. **Attach Task Summary with Git Notes:**
+   - **Step 11.1: Get Commit Hash:** Obtain the hash of the *just-completed commit* (`git log -1 --format="%H"`).
+   - **Step 11.2: Draft Note Content:** Create a detailed summary for the completed task. This should include the task name, a summary of changes, a list of all created/modified files, and the core "why" for the change.
+   - **Step 10.3: Attach Note:** Use the `git notes` command to attach the summary to the commit.
      ```bash
      # The note content from the previous step is passed via the -m flag.
      git notes add -m "<note content>" <commit_hash>
      ```
 
 10. **Get and Record Task Commit SHA:**
-    - **Step 10.1: Update Plan:** Read `plan.md`, find the line for the completed task, update its status from `[~]` to `[x]`, and append the first 7 characters of the *just-completed commit's* commit hash.
-    - **Step 10.2: Write Plan:** Write the updated content back to `plan.md`.
+    - **Step 11.1: Update Plan:** Read `plan.md`, find the line for the completed task, update its status from `[~]` to `[x]`, and append the first 7 characters of the *just-completed commit's* commit hash.
+    - **Step 11.2: Write Plan:** Write the updated content back to `plan.md`.
 
-11. **Commit Plan Update:**
+12. **Commit Plan Update:**
     - **Action:** Stage the modified `plan.md` file.
     - **Action:** Commit this change with a descriptive message (e.g., `conductor(plan): Mark task 'Create user model' as complete`).
 
@@ -356,6 +414,17 @@ If a task takes 5 minutes or more:
 ## Track Cleanup & Synchronization
 
 **CRITICAL:** Once a track is archived or closed, the agent **MUST** activate the `git-sync` skill to ensure the local repository is fully synchronized (pull/push loop) with the remote origin. This ensures all planning artifacts and final implementations are safely pushed.
+
+### Track Archival Memory Update Protocol (longterm-memory)
+
+**CRITICAL:** After archiving or completing a track, the agent MUST follow this ordered protocol:
+1. Execute `git-sync` to synchronize the remote origin
+2. Activate `longterm-memory-orchestrator` skill
+3. Follow the orchestrator's guidance to activate `longterm-memory-writer`
+4. Use `longterm-memory-writer`'s `write-trajectory-log` function to persist a trajectory log of the session
+
+This ensures that track completion, key decisions, outcomes, lessons learned, and the session trajectory are recorded in the project's episodic memory.
+
 
 ## Continuous Improvement
 
